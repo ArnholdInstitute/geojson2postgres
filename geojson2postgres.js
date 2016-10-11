@@ -5,7 +5,7 @@ var es = require('event-stream')
 var wk = require('wellknown')
 
 if(process.argv.length < 3){
-	console.log('usage: ./geojson2pgsql <filename>')
+	console.log('usage: geojson2postges <filename>')
 	process.exit(1)
 }
 

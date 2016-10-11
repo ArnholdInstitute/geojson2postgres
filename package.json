@@ -1,14 +1,14 @@
 {
-  "name": "geojson2pgsql",
+  "name": "geojson2postgres",
   "version": "1.0.0",
   "description": "Insert a GeoJSON file into PostgreSQL",
-  "main": "geojson2pgsql.js",
+  "main": "geojson2postgres.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ArnholdInstitute/geojson2pgsql.git"
+    "url": "git+https://github.com/ArnholdInstitute/geojson2postgres.git"
   },
   "keywords": [
     "postgres",
@@ -18,9 +18,9 @@
   "author": "Matt Le",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ArnholdInstitute/geojson2pgsql/issues"
+    "url": "https://github.com/ArnholdInstitute/geojson2postgres/issues"
   },
-  "homepage": "https://github.com/ArnholdInstitute/geojson2pgsql#readme",
+  "homepage": "https://github.com/ArnholdInstitute/geojson2postgres#readme",
   "dependencies": {
     "command-line-args": "^3.0.1",
     "event-stream": "^3.3.4",

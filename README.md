@@ -1,4 +1,4 @@
-geojson2pgsql
+geojson2postgres
 -------------
 
 Copy a geojson file to PostgreSQL
