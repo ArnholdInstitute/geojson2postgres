@@ -1,6 +1,6 @@
 {
   "name": "geojson2postgres",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Insert a GeoJSON file into PostgreSQL",
   "main": "geojson2postgres.js",
   "scripts": {

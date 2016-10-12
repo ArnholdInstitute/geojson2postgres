@@ -4,11 +4,6 @@ var geojsonStream = require('geojson-stream')
 var es = require('event-stream')
 var wk = require('wellknown')
 
-if(process.argv.length < 3){
-	console.log('usage: geojson2postges <filename>')
-	process.exit(1)
-}
-
 /**
  * Process a GeoJSON file and generate a PostgreSQL
  * script to insert each feature into a database
@@ -55,3 +50,5 @@ function copyToDB(args){
 		console.log('\\.\nCOMMIT;\n')
 	})	
 }
+
+exports.copyToDB = copyToDB
