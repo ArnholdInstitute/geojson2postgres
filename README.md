@@ -3,9 +3,22 @@ geojson2postgres
 
 Copy a geojson file to PostgreSQL
 
+This package supports both a command line interface as well as a programmable API.
+
+## Command Line
+
+To install:
+
+`npm install -g geojson2postgres`
+
+To run:
+
+`geojson2postgres <filename> | psql <db>`
+
+## API
 <a name="copyToDB"></a>
 
-## copyToDB(tablename, file, schema, emitRow)
+### copyToDB(tablename, file, schema, emitRow)
 Process a GeoJSON file and generate a PostgreSQL
 script to insert each feature into a database
 

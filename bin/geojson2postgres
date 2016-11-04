@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+var fs = require('fs');
+
+var geojson2postgres = require('../');
+
+if(process.argv.length > 2){
+	var file = process.argv[2];
+	var json = JSON.parse(fs.readFileSync(file));
+	var schema = geojson2postgres.getSchema(json)
+	var tablename = file.split('/').reverse()[0].split('.')[0]
+	geojson2postgres.copyToDB({
+		schema : Object.keys(schema).map(k => ({name : k, type : schema[k]})),
+		tablename : tablename,
+		file : file,
+		emitRow : row => row.properties
+	})
+}
