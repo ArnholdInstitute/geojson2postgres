@@ -1,17 +1,27 @@
 #!/usr/bin/env node
-var fs = require('fs');
+var fs = require('fs')
+var commandArgs = require('command-line-args')
+var geojson2postgres = require('../')
 
-var geojson2postgres = require('../');
+const optionDefinitions = [
+  {name: 'create', alias: 'c', type: Boolean, defaultOption: false},
+  {name: 'file', alias: 'f', type: String},
+  {name: 'tablename', alias: 't', type: String}
+]
 
-if(process.argv.length > 2){
-	var file = process.argv[2];
-	var json = JSON.parse(fs.readFileSync(file));
-	var schema = geojson2postgres.getSchema(json)
-	var tablename = file.split('/').reverse()[0].split('.')[0]
-	geojson2postgres.copyToDB({
-		schema : Object.keys(schema).map(k => ({name : k, type : schema[k]})),
-		tablename : tablename,
-		file : file,
-		emitRow : row => row.properties
-	})
+var options = commandArgs(optionDefinitions)
+
+if (process.argv.length > 2) {
+  var file = process.argv[2]
+  options.tablename = options.tablename ? options.tablename : file.split('/').reverse()[0].split('.')[0]
+  var json = JSON.parse(fs.readFileSync(file))
+  var schema = geojson2postgres.getSchema(json)
+
+  geojson2postgres.copyToDB({
+    schema: Object.keys(schema).map(k => ({name: k, type: schema[k]})),
+    tablename: options.tablename,
+    file: file,
+    create: options.create,
+    emitRow: row => row.properties
+  })
 }
