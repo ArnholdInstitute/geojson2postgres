@@ -13,7 +13,15 @@ To install:
 
 To run:
 
-`geojson2postgres <filename> | psql <db>`
+`geojson2postgres <filename> <args> | psql <db>`
+
+```
+args:
+  --create (-c): drop the database if it exists and recreate it
+  --file (-f) <filename>: the GeoJSON file to be processed
+  --tablename (-t) <tablename>: the name of the SQL table to be created (defaults to the name of the GeoJSON file)
+```
+
 
 ## API
 <a name="copyToDB"></a>
