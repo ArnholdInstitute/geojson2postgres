@@ -155,7 +155,7 @@ function copyToDB (args) {
     console.log(`CREATE TABLE "${args.tablename}" (${schema});`)
     console.log(`SELECT AddGeometryColumn('','${args.tablename}','geom','4326','GEOMETRY',2);`)
   }
-  console.log(`COPY ${args.tablename} (${colNames.join(',')}) FROM stdin;`)
+  console.log(`COPY ${args.tablename} (${colNames.join(',')}) FROM stdin WITH NULL AS '';`)
   // Stream in the GeoJSON file
   var inStream = fs.createReadStream(args.file)
     .pipe(geojsonStream.parse()).pipe(es.mapSync(function (feature) {
