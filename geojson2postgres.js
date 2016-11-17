@@ -141,12 +141,11 @@ function copyToDB (args) {
     return col.name + ' ' + col.type
   }).join(',')
 
-  args.schema.push({name: 'geom', type: 'Polygon'})
-
   // Comma separated string of just the column names
   var colNames = args.schema.map(function (col) {
     return col.name
-  }).join(',')
+  }) // .join(',')
+  colNames.push('geom')
 
   console.log('BEGIN;')
   if (args.create) {
@@ -156,14 +155,14 @@ function copyToDB (args) {
     console.log(`CREATE TABLE "${args.tablename}" (${schema});`)
     console.log(`SELECT AddGeometryColumn('','${args.tablename}','geom','4326','GEOMETRY',2);`)
   }
-  console.log(`COPY ${args.tablename} (${colNames}) FROM stdin;`)
+  console.log(`COPY ${args.tablename} (${colNames.join(',')}) FROM stdin;`)
   // Stream in the GeoJSON file
   var inStream = fs.createReadStream(args.file)
     .pipe(geojsonStream.parse()).pipe(es.mapSync(function (feature) {
     var row = args.emitRow(feature)
     row.geom = `SRID=4326;${wkStringify(feature.geometry)}`
-    console.log(args.schema.map(function (col) {
-      return row[col.name]
+    console.log(colNames.map(function (col) {
+      return row[col]
     }).join('\t'))
   }))
   inStream.on('end', function () {
@@ -171,6 +170,10 @@ function copyToDB (args) {
     if (args.create)
       console.log(`CREATE INDEX ON ${args.tablename} USING GIST(geom);`)
     console.log('COMMIT;\n')
+
+    if (args.done) {
+      args.done()
+    }
   })
 }
 
