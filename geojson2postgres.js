@@ -154,7 +154,22 @@ function copyToDB (args) {
     console.log(`DROP TABLE IF EXISTS ${args.tablename};`)
     console.log(`CREATE TABLE "${args.tablename}" (${schema});`)
     console.log(`SELECT AddGeometryColumn('','${args.tablename}','geom','4326','GEOMETRY',2);`)
+  }else {
+    for (var i = 0; i < args.schema.length; i++) {
+      console.log(`
+DO $$ 
+    BEGIN
+        BEGIN
+            ALTER TABLE ${args.tablename} ADD COLUMN ${args.schema[i].name} ${args.schema[i].type}${';'}
+        EXCEPTION
+            WHEN duplicate_column THEN NULL${';'}
+        END${';'}
+    END${';'}
+$$${';'}
+      `)
+    }
   }
+
   console.log(`COPY ${args.tablename} (${colNames.join(',')}) FROM stdin WITH NULL AS '';`)
   // Stream in the GeoJSON file
   var inStream = fs.createReadStream(args.file)
