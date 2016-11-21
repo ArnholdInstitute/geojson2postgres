@@ -1,6 +1,6 @@
 {
   "name": "geojson2postgres",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Insert a GeoJSON file into PostgreSQL",
   "main": "geojson2postgres.js",
   "scripts": {
@@ -27,7 +27,8 @@
     "fs": "0.0.1-security",
     "funcy": "0.0.4",
     "geojson-stream": "0.0.1",
-    "moment": "^2.15.2"
+    "moment": "^2.15.2",
+    "pg": "^6.1.0"
   },
   "bin": {
     "geojson2postgres": "./bin/geojson2postgres"

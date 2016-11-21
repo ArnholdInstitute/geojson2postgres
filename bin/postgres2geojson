@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+
+var fs = require('fs')
+var commandArgs = require('command-line-args')
+var geojson2postgres = require('../')
+var pg = require('pg')
+
+const optionDefinitions = [
+  {name: 'file', alias: 'f', type: String},
+  {name: 'db', type: String},
+  {name: 'table', alias: 't', type: String},
+  {name: 'cols', type: String, multiple: true, defaultValue: []}
+]
+
+var options = commandArgs(optionDefinitions)
+
+if (!options.table || !options.db) {
+  console.log(`usage: postgres2geojson --db <db_name> --table <table name>`)
+  process.exit(1)
+}
+
+var outFile = options.file || `${options.table}.json`
+
+var db = new pg.Client({database: options.db})
+db.connect()
+
+var q = `
+SELECT 'Feature' as type, json_build_object(
+	${
+		options.cols.map(c => `'${c}', ${c}`).join(',')
+	}
+) as properties, ST_AsGeoJSON(geom)::json as geometry FROM ${options.table}${';'}
+`
+db.query(q, (err, res) => {
+  if (err) {
+    console.log(err)
+    db.end()
+  }else {
+    fs.writeFileSync(outFile, JSON.stringify({type: 'FeatureCollection', features: res.rows}))
+    db.end()
+  }
+})
+
+debugger
